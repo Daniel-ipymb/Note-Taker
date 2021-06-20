@@ -43,16 +43,19 @@ app.delete('/api/notes/:id', (req, res) => {
   const selectedId = req.params.id;
 
   const noteList = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'));
-  
-  if(selectedId === noteList.id) {
-    noteList.findByAndDelete(id)
-  
-  fs.writeFileSync('./db/db.json', JSON.stringify(noteList), (err) => {
-    if (err) throw err
-    console.log('success')
-  })
-  res.json(noteList)
+  console.log(noteList)
+
+  for (let i = 0; i < noteList.length; i++) {
+    if (selectedId === noteList[i].id) {
+      noteList.splice(i, 1);
+      
+      fs.writeFileSync('./db/db.json', JSON.stringify(noteList), (err) => {
+        if (err) throw err
+        console.log('success')
+      })
+    }
   }
+  res.json(noteList)
 })
 
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
