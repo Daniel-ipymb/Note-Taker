@@ -19,7 +19,7 @@ app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'public','note
 
 app.get('/api/notes', (req, res) => {
   const savedNotes = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'))
-  console.log(savedNotes)
+  
   res.json(savedNotes)
 })
 
@@ -33,8 +33,8 @@ app.post('/api/notes', (req, res) => {
   const allNotes = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'));
   allNotes.push(newNote)
   fs.writeFileSync('./db/db.json', JSON.stringify(allNotes))
-  console.log(allNotes) 
-  res.json(allNotes)
+  
+  res.json(newNote)
   
 })
 
@@ -43,12 +43,16 @@ app.delete('/api/notes/:id', (req, res) => {
   const selectedId = req.params.id;
 
   const noteList = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'));
+  
   if(selectedId === noteList.id) {
     noteList.findByAndDelete(id)
-  }
-  fs.writeFileSync('./db/db.json', JSON.stringify(noteList))
-  console.log(noteList)
+  
+  fs.writeFileSync('./db/db.json', JSON.stringify(noteList), (err) => {
+    if (err) throw err
+    console.log('success')
+  })
   res.json(noteList)
+  }
 })
 
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
