@@ -36,4 +36,4 @@ To use the app start by running `npm i` in the console to install the modules ne
 ## Mockup
 Below is a mockup of the Note taker application;
 
-  ![NoteTaker]()
+  ![NoteTaker](./Notetaker.gif)
